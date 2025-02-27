@@ -1,0 +1,158 @@
+# Bus Booking System API Documentation
+
+## **Base URL:**
+`http://localhost:6000`
+
+---
+
+## **Authentication**
+All protected routes require an **Authorization** header with a Bearer Token.
+
+**Header Format:**
+```
+Authorization: Bearer <your_token>
+```
+
+---
+
+## **User APIs**
+### **1. User Login**
+**Endpoint:** `POST /Login`
+
+**Request Body:**
+```json
+{
+    "email": "user@example.com",
+    "password": "yourpassword"
+}
+```
+
+**Response:**
+```json
+{
+    "Msg": "Login successful",
+    "token": "your_generated_jwt_token"
+}
+```
+
+---
+
+## **Bus APIs**
+
+### **2. Add a Bus (Driver Only)**
+**Endpoint:** `POST /AddBus`
+
+**Headers:** Requires `Authorization` with Driver role.
+
+**Request Body:**
+```json
+{
+    "BusName": "Express Bus",
+    "Type": "AC",
+    "Bording": ["City A"],
+    "Droping": ["City B"],
+    "Route": "A-B"
+}
+```
+
+**Response:**
+```json
+{
+    "Msg": "Bus added successfully",
+    "Data": { "_id": "bus_id", "BusName": "Express Bus" }
+}
+```
+
+---
+
+### **3. Search for Buses (User Only)**
+**Endpoint:** `GET /Search`
+
+**Headers:** Requires `Authorization` with User role.
+
+**Query Parameters:** (Optional)
+```
+BusName, Type, Bording, Droping
+```
+
+**Example:**
+```
+/Search?Type=AC&Bording=CityA&Droping=CityB
+```
+
+**Response:**
+```json
+{
+    "Msg": "Buses found",
+    "Data": [ { "BusName": "Express Bus", "Type": "AC" } ]
+}
+```
+
+---
+
+## **Booking APIs**
+
+### **4. Book a Bus**
+**Endpoint:** `POST /BookBus`
+
+**Headers:** Requires `Authorization`.
+
+**Request Body:**
+```json
+{
+    "busId": "67bf10b463cc27e14b1dbd47"
+}
+```
+
+**Response:**
+```json
+{
+    "Msg": "Bus booked successfully",
+    "Data": { "_id": "booking_id", "user": "user@example.com", "bus": "bus_id", "status": "Booked" }
+}
+```
+
+---
+
+### **5. Cancel a Booking**
+**Endpoint:** `POST /CancelBooking`
+
+**Headers:** Requires `Authorization`.
+
+**Request Body:**
+```json
+{
+    "bookingId": "existing_booking_id"
+}
+```
+
+**Response:**
+```json
+{
+    "Msg": "Booking cancelled successfully"
+}
+```
+
+---
+
+## **Error Responses**
+For all endpoints, if an error occurs, a response like the following will be returned:
+
+```json
+{
+    "Msg": "Server Error",
+    "error": "Error description here"
+}
+```
+
+---
+
+## **Authorization Roles**
+- `User`: Can search for buses and book/cancel bookings.
+- `Driver`: Can add/update buses.
+
+---
+
+### **Contact for Support:**
+If you face issues, please reach out to the developer team.
+
