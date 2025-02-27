@@ -27,8 +27,6 @@ const App = () => {
       localStorage.setItem("theme", "light");
     }
   }, [theme]);
-
-  //AOS Initialization
   React.useEffect(() => {
     AOS.init(
       {
